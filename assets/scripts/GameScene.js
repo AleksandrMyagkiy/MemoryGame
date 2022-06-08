@@ -12,6 +12,13 @@ class GameScene extends Phaser.Scene {
         this.load.image('card3', 'assets/sprites/card3.png');
         this.load.image('card4', 'assets/sprites/card4.png');
         this.load.image('card5', 'assets/sprites/card5.png');
+
+        this.load.audio('theme', 'assets/sounds/theme.mp3');
+        this.load.audio('card', 'assets/sounds/card.mp3');
+        this.load.audio('complete', 'assets/sounds/complete.mp3');
+        this.load.audio('success', 'assets/sounds/success.mp3');
+        this.load.audio('timeout', 'assets/sounds/timeout.mp3');
+
     }
 
     createText() {
@@ -26,7 +33,9 @@ class GameScene extends Phaser.Scene {
 
         if (this.timeout <= 0) {
             //перезапустить игру
+            this.sounds.timeout.play();
             this.start();
+
         } else {
             --this.timeout;
         }
@@ -41,8 +50,24 @@ class GameScene extends Phaser.Scene {
         });
     }
 
+    createSounds() {
+        this.sounds = {
+            card: this.sound.add('card'),
+            theme: this.sound.add('theme'),
+            complete: this.sound.add('complete'),
+            success: this.sound.add('success'),
+            timeout: this.sound.add('timeout'),
+        };
+
+        this.sounds.theme.play({
+            volume: 0.1
+        });
+
+    }
+
     create() {
         this.timeout = config.timeout;
+        this.createSounds();
         this.creatTimer();
         this.createBackground();
         this.createText();
@@ -87,10 +112,14 @@ class GameScene extends Phaser.Scene {
         if (card.opened) {
             return false;
         }
+        this.sounds.card.play();
+
         if (this.openedCard) {
             // уже есть открытая карта
             if (this.openedCard.value === card.value) {
                 // если картинки равны - запомнить
+                this.sounds.success.play();
+
                 this.openedCard = null;
                 ++this.openedCardsCount;
             } else {
@@ -106,6 +135,7 @@ class GameScene extends Phaser.Scene {
         card.open();
 
         if (this.openedCardsCount === this.cards.length / 2) {
+            this.sounds.complete.play();
             this.start();
         }
     }
