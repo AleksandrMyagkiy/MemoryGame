@@ -6,6 +6,10 @@ let config = {
     cols: 5,
     cards: [1, 2, 3, 4, 5],
     timeout: 30,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     scene: new GameScene()
 };
 
