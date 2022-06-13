@@ -7,7 +7,7 @@ let config = {
     cards: [1, 2, 3, 4, 5],
     timeout: 30,
     scale: {
-        mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
+        mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     scene: new GameScene()
